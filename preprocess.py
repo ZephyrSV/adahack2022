@@ -12,6 +12,10 @@ stop_words = stopwords.words('english')
 
 def remove_noise(tweet_tokens, stop_words = ()):
 
+    """
+    takes a list of strings
+    """
+    
     cleaned_tokens = []
 
     for token, tag in pos_tag(tweet_tokens):
@@ -33,4 +37,3 @@ def remove_noise(tweet_tokens, stop_words = ()):
             cleaned_tokens.append(token.lower())
     return cleaned_tokens
 
-print(remove_noise(['yes', 'but', 'you', 'building', 'cars', 'the'], stop_words))
