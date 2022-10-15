@@ -1,9 +1,11 @@
-from Wordclouds import plotWordCloud
-import Wordclouds
+import WordClouds
 from tkinter import *
 from tkinter import ttk
 
 twitter_blue = "#1DA1F2"
+green = "#00FF00"
+red = "#FF0000"
+magenta = "#FF007F"
 
 class EntryWindow():
     
@@ -11,7 +13,7 @@ class EntryWindow():
         self.window = Tk()
         
         self.window.title("S.A.W.D.U.S.T. Cloud")
-        self.window.geometry("300x300")
+        self.window.geometry("300x275")
         self.window.config(background = twitter_blue)
 
 
@@ -31,37 +33,46 @@ class EntryWindow():
         
         instruction2 = Label(self.window, text = "Choose a colour scheme:", font = ("Arial", 12, "bold"), fg = "white", bg = twitter_blue)
         instruction2.place(x = 0, y = 125)
-
+        
         self.radio_var = IntVar()
         self.radio_var.set(1)
-        instruction3 = Radiobutton(self.window, text = "Colorblind", variable = self.radio_var, value = 1)
-        instruction3.place(x = 0, y = 150)
-        instruction4 = Radiobutton(self.window, text = "Colorful", variable = self.radio_var, value = 2)
-        instruction4.place(x = 0, y = 175)
+        radio1 = Radiobutton(self.window, bg = twitter_blue, text = "Standard", font = ("Arial", 12, "bold"), variable = self.radio_var,  value = 1)
+        radio1.place(x = 25, y = 150)
+        radio2 = Radiobutton(self.window, bg = twitter_blue, text = "Colourblind", font = ("Arial", 12, "bold"), variable = self.radio_var, value = 2)
+        radio2.place(x = 25, y = 175)
+        
+        scheme1Positive = Label(self.window, text = "Positive", font = ("Helvetica", 12), fg = "black", bg = green)
+        scheme1Positive.place(x = 155, y = 150)
+        scheme1Negative = Label(self.window, text = "Negative", font = ("Helvetica", 12), fg = "black", bg = red)
+        scheme1Negative.place(x = 225, y = 150)
+        
+        scheme2Positive = Label(self.window, text = "Positive", font = ("Helvetica", 12), fg = "black", bg = green)
+        scheme2Positive.place(x = 155, y = 180)
+        scheme2Negative = Label(self.window, text = "Negative", font = ("Helvetica", 12), fg = "black", bg = magenta)
+        scheme2Negative.place(x = 225, y = 180)
 
-
-        #scheme1Image = PhotoImage(file = "./colourscheme1.GIF")
-        #scheme1Label = Label(self.window, image = scheme1Image)
-        #scheme1Label.place(x = 0, y = 150)
-    
         self.generateButton = Button(self.window, text = "Generate Word Cloud!", command = self.attemptGeneration)
-        self.generateButton.place(x = 0, y = 200)
+        self.generateButton.place(x = 85, y = 215)
+        
+        self.errorLabel = Label(self.window, text = "", font = ("Arial", 12, "bold"), fg = red, bg = twitter_blue)
+        self.errorLabel.place(x = 0, y = 245)
     
     def getInputText(self):
         return self.text.get()
     
+    def updateErrorLabel(self, error):
+        self.errorLabel.config(text = error)
+    
     def attemptGeneration(self):
         word = self.getInputText()
         if word == "":
-            print("temp error message - no text")
+            self.updateErrorLabel("Error - no word has been entered")
         else:
+            self.updateErrorLabel("") # resets error label
             Wordclouds.plotWordCloud(word, self.radio_var.get() == 1)
     
     def run(self):
         self.window.mainloop()
 
-#btn = Button(windowOne, text='Push Me')
-#btn.bind('<Button-1>', MyButtonClicked)
-
-window1 = EntryWindow()
-window1.run()
+window = EntryWindow()
+window.run()
