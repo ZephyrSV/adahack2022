@@ -8,14 +8,14 @@ def createWordCloud(word, colorblind=False):
     word_sentiments = sentiment_colour_pairings(data, colorblind)
     sentiment_colour_func = SimpleGroupedColorFunc(word_sentiments, "black")
 
-    cloud = WordCloud(background_color='black').generate_from_frequencies(word_frequency)
+    cloud = WordCloud(background_color='black', scale=3, height=200*3, width=400*3).generate_from_frequencies(word_frequency)
     cloud.recolor(color_func = sentiment_colour_func)
 
     return cloud
 
 def plotWordCloud(word, colorblind=False):
     cloud = createWordCloud(word, colorblind)
-    plt.figure()
+    plt.figure(figsize=(20,10))
     plt.imshow(cloud, interpolation="bilinear")
     plt.axis("off")
     plt.show()
