@@ -2,10 +2,10 @@ from wordcloud import WordCloud, get_single_color_func
 import matplotlib.pyplot as plt
 from Search import getWordData
 
-def createWordCloud(word):
+def createWordCloud(word, colorblind=False):
     data = getWordData(word)
     word_frequency = {word[0]:word[1] for word in data}
-    word_sentiments = sentiment_colour_pairings(data)
+    word_sentiments = sentiment_colour_pairings(data, colorblind)
     sentiment_colour_func = SimpleGroupedColorFunc(word_sentiments, "black")
 
     cloud = WordCloud(background_color='black').generate_from_frequencies(word_frequency)
@@ -13,45 +13,53 @@ def createWordCloud(word):
 
     return cloud
 
-def plotWordCloud(word):
-    cloud = createWordCloud(word)
+def plotWordCloud(word, colorblind=False):
+    cloud = createWordCloud(word, colorblind)
     plt.figure()
     plt.imshow(cloud, interpolation="bilinear")
     plt.axis("off")
     plt.show()
 
-def sentiment_colour_pairings(data):
+def sentiment_colour_pairings(data, colorblind=False):
     """
     Places words in a list assigned to a discrete colour value in a dict
     Spectrum goes from magenta (- sentiment) through to green (+)
     Assumes data in form [[word,freq,sentiment]].
     """
-    pairings = {colour:[] for colour in ["#FF007F","#FF3399","#FF66B2","#FF99CC","#FFCCE5","#FFFFFF","#CCFFCC","#99FF99","#66FF66","#33FF33","#00FF00"]}
+
+    ColorBlind = ["#FF007F","#FF3399","#FF66B2","#FF99CC","#FFCCE5","#FFFFFF","#CCFFCC","#99FF99","#66FF66","#33FF33","#00FF00"]
+    #nonColorblind goes from red to green
+    NonColorBlind = ["#FF0000","#FF3300","#FF6600","#FF9900","#FFCC00","#FFFF00","#CCFF00","#99FF00","#66FF00","#33FF00","#00FF00"]
+    if colorblind:
+        chosenColorScheme = ColorBlind
+    else:
+        chosenColorScheme = NonColorBlind
+    pairings = {colour:[] for colour in chosenColorScheme}
     for item in data:
         word = item[0]
         sentiment = item[2]
         if sentiment < -0.9:
-            pairings["#FF007F"].append(word)
+            pairings[chosenColorScheme[0]].append(word)
         elif sentiment < -0.7:
-            pairings["#FF3399"].append(word)
+            pairings[chosenColorScheme[1]].append(word)
         elif sentiment < -0.5:
-            pairings["#FF66B2"].append(word)
+            pairings[chosenColorScheme[2]].append(word)
         elif sentiment < -0.3:
-            pairings["#FF99CC"].append(word)
+            pairings[chosenColorScheme[3]].append(word)
         elif sentiment < -0.1:
-            pairings["#FFCCE5"].append(word)
+            pairings[chosenColorScheme[4]].append(word)
         elif sentiment < 0.1:
-            pairings["#FFFFFF"].append(word)
+            pairings[chosenColorScheme[5]].append(word)
         elif sentiment < 0.3:
-            pairings["#CCFFCC"].append(word)
+            pairings[chosenColorScheme[6]].append(word)
         elif sentiment < 0.5:
-            pairings["#99FF99"].append(word)
+            pairings[chosenColorScheme[7]].append(word)
         elif sentiment < 0.7:
-            pairings["#66FF66"].append(word)
+            pairings[chosenColorScheme[8]].append(word)
         elif sentiment < 0.9:
-            pairings["#33FF33"].append(word)
+            pairings[chosenColorScheme[9]].append(word)
         else:
-            pairings["#00FF00"].append(word)
+            pairings[chosenColorScheme[10]].append(word)
     return pairings
 
 class SimpleGroupedColorFunc(object):

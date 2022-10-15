@@ -1,3 +1,4 @@
+# git update-index --assume-unchanged .\TwitterConsumerSecret.txt .\TwitterConsumerKey.txt .\AccessToken.txt .\AccesstokenSecret.txt
 import tweepy
 import re, string
 from nltk import pos_tag
@@ -6,8 +7,6 @@ from nltk.corpus import stopwords
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 sid = SentimentIntensityAnalyzer()
-
-stop_words = stopwords.words('english')
 
 accessToken = open("../AccessToken.txt").read()
 accessTokenSecret = open("../AccessTokenSecret.txt").read()
@@ -60,7 +59,7 @@ for tweet in tweets[0]:
     text = tweet.text
     print(tweet.text + "\n")
     words1 = text.lower().split()
-    words = set(remove_noise(words1, stop_words))
+    words = set(remove_noise(words1, stopwords))
     #print(words)
 
     if not words.intersection(search_term_set):
