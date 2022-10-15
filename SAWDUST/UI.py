@@ -1,4 +1,5 @@
 from Wordclouds import plotWordCloud
+import Wordclouds
 from tkinter import *
 from tkinter import ttk
 
@@ -31,12 +32,20 @@ class EntryWindow():
         instruction2 = Label(self.window, text = "Choose a colour scheme:", font = ("Arial", 12, "bold"), fg = "white", bg = twitter_blue)
         instruction2.place(x = 0, y = 125)
 
+        self.radio_var = IntVar()
+        self.radio_var.set(1)
+        instruction3 = Radiobutton(self.window, text = "Colorblind", variable = self.radio_var, value = 1)
+        instruction3.place(x = 0, y = 150)
+        instruction4 = Radiobutton(self.window, text = "Colorful", variable = self.radio_var, value = 2)
+        instruction4.place(x = 0, y = 175)
+
+
         #scheme1Image = PhotoImage(file = "./colourscheme1.GIF")
         #scheme1Label = Label(self.window, image = scheme1Image)
         #scheme1Label.place(x = 0, y = 150)
     
         self.generateButton = Button(self.window, text = "Generate Word Cloud!", command = self.attemptGeneration)
-        self.generateButton.place(x = 0, y = 150)
+        self.generateButton.place(x = 0, y = 200)
     
     def getInputText(self):
         return self.text.get()
@@ -46,7 +55,7 @@ class EntryWindow():
         if word == "":
             print("temp error message - no text")
         else:
-            plotWorldCloud(word)
+            Wordclouds.plotWordCloud(word, self.radio_var.get() == 1)
     
     def run(self):
         self.window.mainloop()

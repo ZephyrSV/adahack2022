@@ -28,8 +28,8 @@ def sentiment_colour_pairings(data, colorblind=False):
     """
 
     ColorBlind = ["#FF007F","#FF3399","#FF66B2","#FF99CC","#FFCCE5","#FFFFFF","#CCFFCC","#99FF99","#66FF66","#33FF33","#00FF00"]
-    #nonColorblind goes from red to green
-    NonColorBlind = ["#FF0000","#FF3300","#FF6600","#FF9900","#FFCC00","#FFFF00","#CCFF00","#99FF00","#66FF00","#33FF00","#00FF00"]
+    #NonColorBlind goes from red to green
+    NonColorBlind = ["#FF0000","#FF3333","#FF6666","#FF9999","#FFCCCC","#FFFFFF","#CCFFCC","#99FF99","#66FF66","#33FF33","#00FF00"]
     if colorblind:
         chosenColorScheme = ColorBlind
     else:

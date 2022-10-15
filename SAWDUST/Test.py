@@ -35,7 +35,6 @@ tk.Label(mainframe, text="Sawdust Cloud").grid(row=0, column=0, sticky=W)
 
 #add a text box with ephedefault text
 text_box = Text(root, height=10, width=30, padx=15, pady=15, font="Ubuntu", bg="white", fg="black", wrap=WORD, borderwidth=2, relief="groove")
-
 text_box.pack()
 
 Colorblind = True
