@@ -1,10 +1,11 @@
 import tweepy
-from textblob import TextBlob
 import re, string
-import nltk
 from nltk import pos_tag
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.corpus import stopwords
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+sid = SentimentIntensityAnalyzer()
 
 stop_words = stopwords.words('english')
 
@@ -19,9 +20,9 @@ auth.set_access_token(accessToken, accessTokenSecret)
 api = tweepy.API(auth)
 client = tweepy.Client(bearer_token)
 
-search_term = "police"
-search_term_set = set(search_term.split())
-search_query = search_term + " lang:en"
+search_term = "bad apples"
+search_term_set = set(search_term.lower().split())
+search_query = search_term + " lang:en -is:verified -is:retweet"
 tweets = client.search_recent_tweets(query=search_query, max_results=100)  # returns Response Object
 
 
@@ -48,7 +49,7 @@ def remove_noise(tweet_tokens, stop_words=()):
         lemmatizer = WordNetLemmatizer()
         token = lemmatizer.lemmatize(token, pos)
 
-        if len(token) > 0 and token not in string.punctuation and token.lower() not in stop_words and token != 'rt':
+        if len(token) > 0 and token not in string.punctuation and token.lower() not in stop_words and token != 'rt' and token != 'amp':
             cleaned_tokens.append(token.lower())
     return cleaned_tokens
 
@@ -57,20 +58,20 @@ wordcount = {}
 word_sentiment = {}
 for tweet in tweets[0]:
     text = tweet.text
+    print(tweet.text + "\n")
     words1 = text.lower().split()
     words = set(remove_noise(words1, stop_words))
     #print(words)
 
     if not words.intersection(search_term_set):
         continue
-    sentiment = TextBlob(text).sentiment.polarity
+    sentiment = sid.polarity_scores(text)["compound"]
     for word in words:
         wordcount.setdefault(word, 0)
         wordcount[word] += 1
         word_sentiment.setdefault(word, 0)
         word_sentiment[word] += sentiment
-    #print("The polarity is: " + str(TextBlob(text).sentiment.polarity) + ", The subjectivity is: " + str(
-    #    TextBlob(text).sentiment.subjectivity) + "\n")
+    print("The polarity is: " + str(sentiment)+"\n")
 
 wordcount_ = dict(sorted(wordcount.items(), key=lambda item: item[1], reverse=True))
 print(wordcount_)
@@ -85,4 +86,3 @@ print(word_sentiment_)
 full_list = [[word, wordcount_[word], word_sentiment[word]] for word in wordcount_.keys()]
 
 print(full_list[:50])
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
