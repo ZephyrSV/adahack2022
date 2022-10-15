@@ -1,4 +1,4 @@
-import WordClouds
+import Wordclouds
 from tkinter import *
 from tkinter import ttk
 
@@ -51,8 +51,8 @@ class EntryWindow():
         scheme2Negative = Label(self.window, text = "Negative", font = ("Helvetica", 12), fg = "black", bg = magenta)
         scheme2Negative.place(x = 225, y = 180)
 
-        self.generateButton = Button(self.window, text = "Generate Word Cloud!", command = self.attemptGeneration)
-        self.generateButton.place(x = 85, y = 215)
+        self.generateButton = Button(self.window, text = "Generate Word Cloud!", font = ("Arial", 10), command = self.attemptGeneration, fg = twitter_blue, activeforeground = twitter_blue, bg = "white")
+        self.generateButton.place(x = 77, y = 213)
         
         self.errorLabel = Label(self.window, text = "", font = ("Arial", 12, "bold"), fg = red, bg = twitter_blue)
         self.errorLabel.place(x = 0, y = 245)
@@ -69,7 +69,7 @@ class EntryWindow():
             self.updateErrorLabel("Error - no word has been entered")
         else:
             self.updateErrorLabel("") # resets error label
-            Wordclouds.plotWordCloud(word, self.radio_var.get() == 1)
+            Wordclouds.plotWordCloud(word, self.radio_var.get() != 1)
     
     def run(self):
         self.window.mainloop()
